@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AddressBook.DAL.Contact>
+
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactSurname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactMidName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactPhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactType)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactSurname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactPhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactType.ContactTypeName)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.ContactId })
+                @Html.ActionLink("Удалить", "Delete", new { id = item.ContactId })
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<AddressBook.DAL.Contact>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<p>
+    @Html.ActionLink("Добавить", "Add")
+</p>
+
+@using (Ajax.BeginForm("Search", new AjaxOptions()
+{
+    UpdateTargetId = "contacts",
+    Url= Url.Action("JsonSearch"),
+    OnSuccess = "ParseJson"
+}))
+{
+<div>
+    <input type="text" name="search" />
+    <input type="submit" value="Поиск" />
+</div>
+
+}
+
+<div id="contacts">
+    @Html.Action("Search")
+</div>
+
+<script type="text/javascript">
+    function ParseJson(data) {
+        var target = $("#contacts");
+        target.empty();
+
+        if (data.length == 0) {
+            target.append("<b>Результатов нет<br>Попробуй еще!</b>");
+        } else {
+
+
+            target.append("<table>");
+            target.append("<tr>" +
+                "<th>@Html.DisplayNameFor(model => model.ContactName)</th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactSurname) </th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactMidName) </th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactPhoneNumber) </th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactAddress) </th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactEmail) </th>" +
+                "<th> @Html.DisplayNameFor(model => model.ContactType) </th>" +
+                     "<th>  </th>" +
+                     "</tr>");
+
+        for (var i = 0; i < data.length; i++) {
+            target.append("<tr>" +
+                    "<td>"+ data[i].ContactName + "</td>" +
+                    "<td>"+ data[i].ContactSurname + "</td>" +
+                    "<td>" + data[i].ContactMidName + "</td>" +
+                    "<td>" + data[i].ContactPhoneNumber + "</td>" +
+                    "<td>" + data[i].ContactAddress + "</td>" +
+                    "<td>" + data[i].ContactEmail + "</td>" +
+                    "<td>" + data[i].ContactType.ContactTypeName + "</td>" +
+                    "<td> <a href=Contact/Edit/" + data[i].ContactId + ">Редактировать</a>" +" | "+
+                         "<a href=Contact/Delete/" + data[i].ContactId + ">Удалить</a></td>" +
+                "</tr>");
+        }
+        target.append("</table>");
+        }
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery-1.8.2.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}

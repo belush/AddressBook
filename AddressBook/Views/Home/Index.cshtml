@@ -1,0 +1,120 @@
+﻿@*@model AddressBook.Business.ContactHelper*@
+@model IEnumerable<AddressBook.DAL.Contact>
+@{
+    ViewBag.Title = "Home Page";
+    string userName = User.Identity.Name;
+
+    
+}
+
+@*@{ var contactList = Model.GetContacts();}*@
+
+
+@*<h4>Index</h4>*@
+<p>
+    @if (userName != "")
+    {
+        @Html.ActionLink(Resources.Resource.Create, "AddContact","Contact");
+       
+     
+    }
+</p>
+
+<p>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <b>@Resources.Resource.Searchby</b><b>:</b><br />
+        @Html.RadioButton("searchBy", "Surname")@Resources.Resource.Surname<br />
+        @Html.RadioButton("searchBy", "Name", true)@Resources.Resource.ContactName<br />
+        @Html.RadioButton("searchBy", "PhoneNumber")@Resources.Resource.PhoneNumber<br />
+        @Html.RadioButton("searchBy", "Email")@Resources.Resource.Email<br />
+        @Html.TextBox("search")    <input type="submit" value="@Resources.Resource.Search" />
+    }
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>
+                <b>
+                    @Html.ActionLink(Resources.Resource.Surname, "Index",
+                new
+                {
+                    sortBy = ViewBag.SortSurnameParameter
+                })
+                </b>
+            </td>
+            <td>
+                <b>
+                    @Html.ActionLink(Resources.Resource.ContactName, "Index",
+                new
+                {
+                    sortBy = ViewBag.SortNameParameter
+                })
+                </b>
+            </td>
+            
+
+            <td><b>@Resources.Resource.Midname</b></</td>
+            <td>
+                <b>
+                    @Html.ActionLink(Resources.Resource.PhoneNumber, "Index",
+                new
+                {
+                    sortBy = ViewBag.SortPhoneNumberParameter
+                })
+                </b>
+            </td>
+            <td><b>@Resources.Resource.Address</b></td>
+            <td>
+                <b>
+                    @Html.ActionLink(Resources.Resource.Email, "Index",
+                new
+                {
+                    sortBy = ViewBag.SortEmailParameter
+                })
+                </b>
+            </td>
+            <td><b>@Resources.Resource.Author</b></</td>
+            <td><b>@Resources.Resource.ContactType</b></</td>
+        </tr>
+    </thead>
+
+    @*@{ var contactList = Model.GetContacts();}*@
+
+    @foreach (var contact in Model)
+    {
+        <tr>
+            <td>@contact.ContactSurname</td>
+            <td>@contact.ContactName</td>
+            <td>@contact.ContactMidName</td>
+            <td>@contact.ContactPhoneNumber</td>
+            <td>@contact.ContactAddress</td>
+            <td>@contact.ContactEmail</td>
+            <td>@*@contact.User.UserLogin*@</td>
+            <td>@contact.ContactType.ContactTypeId</td>
+            @if (userName == "admin1")
+            {
+                <td>@Html.ActionLink(Resources.Resource.Edit, "EditContact2", "Contact", new { id = contact.ContactId }, null)</td>
+                <td>@Html.ActionLink(Resources.Resource.Delete, "DeleteContact", "Contact", new { id = contact.ContactId }, null)</td>
+            }
+            else
+            {
+                //if (contact.User.UserLogin == userName && userName != "")
+                {
+                    <td>@Html.ActionLink(Resources.Resource.Edit, "EditContact2", "Contact", new { id = contact.ContactId }, null)</td>
+                    <td>@Html.ActionLink(Resources.Resource.Delete, "DeleteContact", "Contact", new { id = contact.ContactId }, null)</td>
+                }
+            }
+            
+            
+        </tr>
+    }
+
+
+
+
+</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
